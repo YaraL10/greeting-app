@@ -3,6 +3,16 @@ pipeline {
 
     stages {
 
+        stage('SonarQube Analysis') {
+            steps {
+                dir('complete') {
+                    withSonarQubeEnv('Sq1') {
+                        sh './mvnw sonar:sonar'
+                    }
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 dir('complete') {
