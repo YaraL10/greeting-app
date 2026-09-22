@@ -5,10 +5,12 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh '''
-                    ./mvnw clean package -DskipTests
-                    docker build -t greeting-app:latest .
-                '''
+                dir('complete') {
+                    sh '''
+                        ./mvnw clean package -DskipTests
+                        docker build -t greeting-app:latest .
+                    '''
+                }
             }
         }
 
