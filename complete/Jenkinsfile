@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Build') {
+            steps {
+                sh '''
+                    ./mvnw clean package -DskipTests
+                    docker build -t greeting-app:latest .
+                '''
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh '''
+                    docker stop greeting-app || true
+                    docker rm greeting-app || true
+                    docker run -d --name greeting-app -p 8081:8080 greeting-app:latest
+                '''
+            }
+        }
+    }
+}
